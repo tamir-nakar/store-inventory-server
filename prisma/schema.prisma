@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id            Int           @id @default(autoincrement())
+  name          String        @unique
+  inventoryItem InventoryItem?
+
+  @@map("products")
+}
+
+model InventoryItem {
+  id        Int    @id @default(autoincrement())
+  productId Int    @unique
+  quantity  Int
+
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("inventory_items")
+}
